@@ -28,3 +28,9 @@ python $FUTER_basedir/FuTER_Pipeline.py  \
     --genome_gtf   $FUTER_basedir/HG38_Genome_Data/gencode.v44.annotation.gtf \
     --outdir outdir/data \
     --CPU N
+
+This will create a series of folders within the output directory containing the outputs of intermediate processing steps as well as the final output of the pipeline. Contents are as follows:
+1) Phase1_init_alignments - the results of aligning long reads to the user defined TE genome. These are broken down into three groups (Pure TE - reads that aligned 100% to a TE sequence; chimeric - reads that partially aligned to a TE sequence, as well as the human genome; No_TE - reads that aligned less than 5% to a TE sequence. These reads are discarded and do not proceed through the pipeline as they are not potential contributors of major TE chimeric transcripts). 
+2) Phase2_LR_fusion_cand - the output of LR reads aligned to the combined TE / Human Genome. This identifies the reads that were identified by Ctat minimap2 as being chimeric reads which in this case aligned to both gene-encoding regions of the human genome as well as TE scaffolds. The "_chims_described" file serves as the reference document for the next Phase of the pipeline as it identiifes and organizes the reads that aligned to the two areas of the genome (gene-encoding regions and TE scaffold). 
+3) Phase3_TELR_Fusion - This folder contains the majority of output files from the pipeline. This phase serially filters the identified chimeric reads based on mapping quality, promiscuity of read alignment, etc (most settings can be adjusted by the user). 
+4) Final_output - Congrats. This contains the output! 
