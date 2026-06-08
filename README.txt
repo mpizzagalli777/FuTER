@@ -38,7 +38,7 @@ This will create a series of folders within the output directory containing the 
 
 In order to create visualizations, we also provide two further scripts that can be used to further process the long read sequencing data and generate IGV based visualizations, as well as the input data to create GViz based figures as are present in the original manuscript. These two scripts are 1) LR_IGV_report_gen.py and 2) LR_contig_combination. 
 
-LR_IGV_report_gen.py will generate an IGV-Reports HTML for a selected set of fusions. It will, for a specified set of Fusions of Interest (provided in the --fusion_list variable) extract the reads that were used to identify the fusion and generate an IGV-Reports file demonstrating alignment patterns. This can be used to analyze the breakpoints and investigate the structure of the fusions. It is run as follows:
+LR_IGV_report_gen.py will generate an IGV-Reports HTML for a selected set of fusions. It will, for a specified set of Fusions of Interest (provided in the --fusion_list variable), extract the reads that were used to identify the fusion and generate an IGV-Reports file demonstrating alignment patterns. This can be used to analyze the breakpoints and investigate the structure of the fusions. It is run as follows:
 
 python $LRTE_basedir/scripts/LR_IGV_report_gen.py \
   --Phase3_TELR_Fusion_dir $out_basedir/Phase3_TELR_Fusion/ \
@@ -46,18 +46,14 @@ python $LRTE_basedir/scripts/LR_IGV_report_gen.py \
   --fusion_list  $out_basedir/GB11_Fusions_of_Interest_all.txt \
   --max_LR_per_fusion N \
   --threads N \
-  --genome_lib_dir $LRTE_basedir/TEgenome_prep \
-  --util_dir       $FUTER_basedir/scripts/CTAT-LR-fusion.v1.1.1/util \
-  --fi_util_dir    $FUTER_basedir/scripts/CTAT-LR-fusion.v1.1.1/FusionInspector/util \
-  --basedir         $out_basedir/
+  --outdir         [path to output location]
 
-Phase3_TELR_Fusion_dir
-Sample_prefix
-fusion_list
-max_LR_per_fusion
-threads
-genome_lib_dir
-util_dir
+Phase3_TELR_Fusion_dir - Path to directory created by FuTER containing *_LR-FI_targets.gtf, *_LR-FI.mm2.bam, etc. 
+Sample_prefix - Prefix of sample of interest. Used to find (*_LR-FI_targets.gtf, *_LR-FI.mm2.bam, etc
+fusion_list - A list of fusions to visualize. The names need to exactly match those from the FuTER output (eg. OS9--chrTE_307786). Each fusion should be on a new line
+max_LR_per_fusion - The maximum number of reads to show in the IGV viewer. 
+threads - Number of CPUs provided
+outdir - This is the path to the desired output directory. If the same directory from the previous steps is used, the IGV html files can be found in the Final_output directory. The script will also create a directory called IGV_prep with intermediate files in it.
 
 The next step, LR_contig_combination.py, analyses the reads in order to identify whether the reads contain a significant proportion of internal promoter sequences. This can be a sign of a fusion being a technical artifact arising from the PCR steps used in the ONT protocol. After this filtering, the script will generate consensus sequences for the fusion transcripts using both Medaka and RNA Bloom are used. These approaches polish the more error prone ONT reads and RNA bloom uses a scaffold free approach to generate a consensus sequence for the fusion transcript. The script will also align reads to the consensus sequences in order to provide the bam files necessary to create the visualizations found in the paper. LR_contig_combination.py is run as follows:
 
