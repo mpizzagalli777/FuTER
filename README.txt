@@ -23,7 +23,7 @@ python TE-lib-integration.py \
 The second performs the actual identification of fusion transcripts. 
 To run this step, the script must be run as follows:
 
-python $FUTER_basedir/FuTER_Pipeline.py  \
+python FuTER_Pipeline.py  \
     --reads_fastq $FUTER_basedir/test_reads/RM_testset_newTEs_AllFusions_and_Transcripts_sim_reads.fasta \
     --genome_fasta $FUTER_basedir/HG38_Genome_Data/gencode.v44.genome.fa \
     --genome_gtf   $FUTER_basedir/HG38_Genome_Data/gencode.v44.annotation.gtf \
@@ -44,7 +44,7 @@ LR_IGV_report_gen.py will generate an IGV-Reports HTML for a selected set of fus
 
 LR_IGV_report_gen.py is run as follows:
 
-python $LRTE_basedir/scripts/LR_IGV_report_gen.py \
+python LR_IGV_report_gen.py \
   --Phase3_TELR_Fusion_dir $out_basedir/Phase3_TELR_Fusion/ \
   --Sample_prefix       GB2_p20_PCS114_20241114_py_unmasked \
   --fusion_list  $out_basedir/GB11_Fusions_of_Interest_all.txt \
@@ -62,29 +62,27 @@ outdir - This is the path to the desired output directory. If the same directory
 The next step, LR_contig_combination.py, analyses the reads in order to identify whether the reads contain a significant proportion of internal promoter sequences. This can be a sign of a fusion being a technical artifact arising from the PCR steps used in the ONT protocol. After this filtering, the script will generate consensus sequences for the fusion transcripts using RNA Bloom (and medaka if desired). These approaches polish the more error prone ONT reads and RNA bloom uses a scaffold free approach to generate a predicted consensus sequence (or multiple) for the fusion transcript. 
 The script will also align the original reads to both the fusion contigs and the human genome in order to provide the bam files necessary to create the visualizations found in the paper. 
 
-LR_contig_combination.py is run as follows:
+LR_contig_combination.py is run as follows at its most basic:
 
-python $LRTE_basedir/scripts/LR_contig_combination.py \
+python LR_contig_finalprocessing.py \
   --base_dir \
-  --TEgenome_dir $FUTER_basedir/TEgenome_prep/ \
-  --fastq_dir [Path to long read fastq files] \
-  --Script_dir $FUTER_basedir/scripts \
-  --TEIF_dir $FUTER_basedir/TEIF \
-  --genome_fasta $FUTER_basedir/TEgenome_prep/gencode.v44.genome.fa \
   --fusion_list [path to]/GB11_Fusions_of_Interest_all.txt \
-  --Sample_prefix GB11 \
+  --fastq_dir [Path to long read fastq files] \
+  --Sample_prefix \
   --min_num_LR [Min number of long reads required to proceed] \
-  --threads N \
-  --rnabloom_extra [Options passed to RNA Bloom]
+  --threads N 
 
-base_dir - 
-TEgenome_dir - 
+base_dir - Base directory containing Phase3_TELR_Fusion, IGV_prep, Final_output, etc. The output will be found in the Fusion_Alignments folder
 fastq_dir - Path to long read fastq files
-Script_dir - 
-TEIF_dir - 
-genome_fasta - 
 fusion_list - see above. 
-Sample_prefix - 
-min_num_LR - Min number of long reads required to proceed with analysis. Higher read counts ensure better coverage 
+Sample_prefix - The prefix of the sample this is run on. If there are replicates, the common prefix for the sample should be used here (eg GB11 for GB11_1..., GB11_2... and GB11_3...)
+min_num_LR - Min number of long reads required to proceed with analysis. Higher read counts ensure better coverage. Any fusions with fewer than this number of reads supporting them will not be processed by this step. 
 threads - Number of CPUs provided 
-rnabloom_extra - Options passed to RNA Bloom
+
+Options:
+--rnabloom_extra - Options passed to RNA Bloom
+--genome_fasta - Path to the genome fasta file. Default is the human genome in TEgenome prep (gencode.v44.genome.fa)
+--all_breakpoints - Run RNA bloom (and medaka if desired) on each individual breakpoint rather than on all of the reads together. Will significanly increase run time 
+--medaka_model - Medaka model name (e.g., r1041_e82_400bps_sup). If omitted, medaka step is skipped. For more information see: https://github.com/nanoporetech/medaka
+--medaka_bin - Medaka consensus executable (default is "medaka_consensus")
+--keep_intermediate - keep per-sample extracted FASTQs and intermediate files
