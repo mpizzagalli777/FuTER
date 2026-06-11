@@ -1,5 +1,5 @@
 FuTER (Fusion TE Reporter) was developed to allow users to efficiently identify fusion transcripts arising from Transposable Elements (TEs).
-Although it was developed using human samples, it should be easily adapted to any kind of model organism (although additional work by the end user will be required. This includes generating the additional CTAT library files that are provided for the human genome. For more information see ***).
+Although it was developed using human samples, it should be easily adapted to any kind of model organism (although additional work by the end user will be required. This includes generating the additional CTAT library files that are provided for the human genome. For more information see https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/ and https://github.com/TrinityCTAT/ctat-genome-lib-builder/wiki).
 
 To provide an easier start up, a set of the required input files is provided for Gencode version 44 in the HG38_Genome_Data directory. 
 More information on how each file was created can be found in the README file found in that directory.  
