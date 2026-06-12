@@ -140,7 +140,7 @@ def main():
     script_dir = Path(__file__).resolve().parent #Gives path to FuTER base directory
 
     util_dir    	= ensure(script_dir / "utils/scripts")
-    genome_lib_dir 	= ensure(script_dir / "TEgenome_prep")
+    genome_lib_dir 	= ensure(script_dir / "HG38_Genome_Data")
     outdir     		= Path(args.outdir).expanduser().resolve()
     igv_dir    		= ensure(outdir / "IGV_prep")
     igv_samp_dir	= ensure(igv_dir / f"{sample_prefix}")
