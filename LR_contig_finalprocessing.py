@@ -195,7 +195,7 @@ def main():
 	util_dir	= ensure(script_dir / "utils")
 	igv_dir		= ensure(script_dir / "IGV_prep")
 	TEIF_dir	= ensure(script_dir / "TEIF")
-	tegenome_dir= ensure(script_dir / "TEgenome_prep")
+	tegenome_dir= ensure(script_dir / "HG38_Genome_Data")
 	out_root	= ensure(base_dir / "Fusion_Alignments")
 	
 	fusion_list = Path(args.fusion_list).expanduser().resolve()
