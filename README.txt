@@ -1,11 +1,11 @@
 FuTER (Fusion TE Reporter) was developed to allow users to efficiently identify fusion transcripts arising from Transposable Elements (TEs).
 Although it was developed using human samples, it should be easily adapted to any kind of model organism (although additional work by the end user will be required. This includes generating the additional CTAT library files that are provided for the human genome. For more information see https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/ and https://github.com/TrinityCTAT/ctat-genome-lib-builder/wiki).
 
-To provide an easier start up, a set of the required input files is provided for Gencode version 44 in the HG38_Genome_Data directory. 
-More information on how each file was created can be found in the README file found in that directory.  
+To provide an easier start up, a set of the required input files is provided for Gencode version 44 at https://zenodo.org/records/20649022. 
 In order to perform this analysis on a different genome/model organism, these input files must be generated/obtained. 
 
-There are two main steps in the pipeline. 
+Prior to using the pipeline, please generate an environment using the FuTER_environment.yml file. 
+There are two main steps in the pipeline.
 The first generates the reference libraries that will be used by the program to identify the fusion transcripts. This will generate a new folder within FuTER called TEIF (an ode to the CTAT Viral Integration Finder). It will contain the combined reference genome and TE scaffolds as well as the final TE database that is filtered to remove TEs that are very similar to one another. If users are utilizing HG38, we have made the input data used below available at: 
 
 To run this step, the TE_lib_integration.py must be run as follows:
@@ -60,7 +60,7 @@ threads - Number of CPUs provided
 outdir - This is the path to the desired output directory. If the same directory from the previous steps is used, the IGV html files can be found in the Final_output directory. The script will also create a directory called IGV_prep with intermediate files in it. 
 
 The next step, LR_contig_combination.py, analyses the reads in order to identify whether the reads contain a significant proportion of internal promoter sequences. This can be a sign of a fusion being a technical artifact arising from the PCR steps used in the ONT protocol. After this filtering, the script will generate consensus sequences for the fusion transcripts using RNA Bloom (and medaka if desired). These approaches polish the more error prone ONT reads and RNA bloom uses a scaffold free approach to generate a predicted consensus sequence (or multiple) for the fusion transcript. 
-The script will also align the original reads to both the fusion contigs and the human genome in order to provide the bam files necessary to create the visualizations found in the paper. 
+The script will also align the original reads to both the fusion contigs and the human genome in order to provide the bam files necessary to create the visualizations found in the paper. Due to some incompatabilities, it utilizes the environment specified in FinalContig_env.yml. 
 
 LR_contig_combination.py is run as follows at its most basic:
 
